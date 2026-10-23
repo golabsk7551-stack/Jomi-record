@@ -35,4 +35,3 @@ jobs:
         with:
           name: app-release-apk
           path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-          
