@@ -1,178 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+name: golab_digital_land_survey
+description: "Official Digital Land Survey App of Golab Sk"
+publish_to: 'none'
+version: 1.0.0+1
 
-void main() {
-  runApp(const LandRecordApp());
-}
+environment:
+  sdk: '>=3.0.0 <4.0.0'
 
-class LandRecordApp extends StatelessWidget {
-  const LandRecordApp({super.key});
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  flutter_windowmanager: ^0.2.0
+  qr_flutter: ^4.1.0
+  pdf: ^3.10.7
+  printing: ^5.12.0
+  webview_flutter: ^4.7.0
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'ভূমির দলিল ও অংশ',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        useMaterial3: true,
-      ),
-      home: const DashboardScreen(),
-    );
-  }
-}
-
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
-
-  @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = [
-    const RecordViewerScreen(),
-    const ShareCalculatorScreen(),
-    const MapViewScreen(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.business, color: Colors.teal),
-            ),
-            const SizedBox(width: 10),
-            const Text(
-              'জমি ও রেকর্ড',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.teal,
-      ),
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.description),
-            label: 'রেকর্ড',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
-            label: 'হিসাব',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'ম্যাপ',
-          ),
-        ],
-        selectedItemColor: Colors.teal,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-      ),
-    );
-  }
-}
-
-class RecordViewerScreen extends StatefulWidget {
-  const RecordViewerScreen({super.key});
-
-  @override
-  State<RecordViewerScreen> createState() => _RecordViewerScreenState();
-}
-
-class _RecordViewerScreenState extends State<RecordViewerScreen> {
-  InAppWebViewController? webViewController;
-  final String banglarBhumiUrl = "https://banglarbhumi.gov.in/BanglarBhumi/KnowYourProperty";
-
-  @override
-  Widget build(BuildContext context) {
-    return InAppWebView(
-      initialUrlRequest: URLRequest(url: WebUri(banglarBhumiUrl)),
-      initialSettings: InAppWebViewSettings(
-        javaScriptEnabled: true,
-        useShouldOverrideUrlLoading: true,
-      ),
-      onWebViewCreated: (controller) {
-        webViewController = controller;
-      },
-    );
-  }
-}
-
-class ShareCalculatorScreen extends StatefulWidget {
-  const ShareCalculatorScreen({super.key});
-
-  @override
-  State<ShareCalculatorScreen> createState() => _ShareCalculatorScreenState();
-}
-
-class _ShareCalculatorScreenState extends State<ShareCalculatorScreen> {
-  final TextEditingController totalLandController = TextEditingController();
-  final TextEditingController shareAnnasController = TextEditingController();
-  String resultText = "ফলাফল এখানে দেখাবে";
-
-  void calculateShare() {
-    double totalLand = double.tryParse(totalLandController.text) ?? 0;
-    double annas = double.tryParse(shareAnnasController.text) ?? 0;
-    double share = (totalLand * annas) / 16.0;
-    setState(() {
-      resultText = "আপনার অংশের পরিমাণ: $share";
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          TextField(
-            controller: totalLandController,
-            decoration: const InputDecoration(labelText: 'মোট জমির পরিমাণ'),
-            keyboardType: TextInputType.number,
-          ),
-          TextField(
-            controller: shareAnnasController,
-            decoration: const InputDecoration(labelText: 'অংশ (আনা)'),
-            keyboardType: TextInputType.number,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: calculateShare,
-            child: const Text('গণনা করুন'),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            resultText,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MapViewScreen extends StatelessWidget {
-  const MapViewScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('ম্যাপ ফিচারটি এখানে যুক্ত হবে'),
-    );
-  }
-}
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/logo.png
+    - assets/qr.png
